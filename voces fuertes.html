@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/><!--Con la etiqueta meta, le damos informacion acerca de la pantalla, y como se debe aclopar dependiendo de al total de la ventana-->
+  <title>Plataforma de Apoyo</title>
+  <style>
+    body {/*Aqui aplicamos herencia, ya que el contenedor padre "Body", esta herendado el font-family, a todo lo que este dentro de el, osea, sus elementos hijos. Mientras no declaremos el los estilos a los contenedores hijos, estos seguiran heredando el tipo de letra*/
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: url('https://images.unsplash.com/photo-1603383731470-7f0115283eeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80') no-repeat center center fixed;
+      background-size: cover;
+      transition: background 1s ease-in-out;
+    }
+
+    header {/*En este apartado, el contenedor padre es "Header", y le estamos definiendo estilos. Esto quiere decir, que todo lo que este adentro de header(los hijos), se le aplicaran estos estilos. utilizando asi la herencia*/
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background-color: #82aff1;
+      color: white;
+      text-align: center;
+      padding: 20px 10px;
+      z-index: 1000;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    header:hover {/*"Hover" es una selector avanzado de tipo "Pseudoclase", es una función, que nos permite, que cada vez que el usuario pase el cursor sobre el header, este cambiara de color de fondo*/
+      background-color: #689ff1;
+      background-color:  #8981f5;
+    }
+
+    header h1 {/*Aqui, estamos seleccionando header, que es el contenedor padre, y dentro de este mismo, h1 que corresponde al contenedor hijo. Estamos definiendo h1, por lo tanto, ya no puede heredar los estilos como tamaño de letra, y color de letra, si lo declaramos en su contenedor padre "header".*/
+      margin: 0;
+      font-size: 36px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      color: #daecb7;
+      animation: slideDown 1s ease;
+      transition: color 0.3s ease;
+    }
+
+    header h1:hover {/*utilizamos "hover", para cambiar el color de letra de h1, que se encuentra dentro del contendor header*/
+      color: #fff;
+    }
+
+    @keyframes slideDown {/*"kerframe" la utilizamos para crear animaciones en css, es una manera de decirle al navegador, los pasos (frames) para la animacion "From y to" lo utilizamos para que, hagamos una transcion de una sentencia a otra*/
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .dropdown {
+      position: fixed;
+      top: 80px;
+      left: 10px;
+      padding: 5px;
+      background-color: #ffffffee;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      z-index: 999;
+      transition: transform 0.3s ease;
+    }
+
+    .dropdown:hover {/*hover es para cambiar el elemento, cuando el usuario pase el cursor, o lo ponga encima de el elemento*/
+      transform: scale(1.05);
+    }
+
+    .page {
+      display: none;
+      max-width: 800px;
+      margin: 150px auto 20px auto;
+      padding: 30px;
+      border-radius: 12px;
+      background-color: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .page.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    h1, h2 {
+      color: #534cca;
+    }
+
+    p, label, li {
+      color: #333;
+      font-size: 16px;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    input[type="text"],/*Aqui, usamos un selector de tipo atributo, donde ponemos la etiqueta, y el atributo que en este caso es "text", y le agregamos estilos*/
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+      transition: border-color 0.3s ease;
+    }
+
+    input[type="text"]:focus,/*"Focus" se utiliza para remarcar algun elemento, cuando el usuario de click en el, en este caso, remarca las casillas de nuestro formulario, cuando es presionado*/
+    textarea:focus {/*Solo remarcamos el contorno, usando "border"*/
+      border-color: #6a1b9a;
+
+      outline: none;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 10px 15px;
+      border: none;
+      background-color: #80c4f5;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s;
+    }
+
+    button:hover {/*utilizamos "hover", para cambiar de una sentencia a otra*/
+      background-color: #8981f5;
+      transform: scale(1.05);
+    }
+
+    #reportMessage, #experienceMessage {/*seleccionamos 2 elementos, separandolos por coma*/
+      margin-top: 10px;
+      color: green;
+      font-weight: bold;
+    }
+
+    #searchResults, #savedExperiences {
+      margin-top: 15px;
+      background: #f1f1f1;
+      padding: 10px;
+      border-radius: 6px;
+    }
+
+    iframe {/*Iframe, es un elemento de html, que nos crea una ventana donde podremos reproducir videos o conectar a otras paginas web*/
+      max-width: 100%;
+      border-radius: 8px;
+      transition: transform 0.3s ease;
+    }
+
+    iframe:hover {/*Usamos hover para cambiar de una cosa a otra*/
+      transform: scale(1.02);
+    }
+
+    @media screen and (max-width: 600px) {/*Aqui, usamos "Diseño responsivo, para que la pagina se adapte dependiendo del dispositivo en el que se vea, la condicion nos dice "Cuando la pantalla sea 600px, los elementos se acomodaran de la siguiente manera"*/
+      .page {
+        margin: 180px 10px 20px 10px;
+        padding: 20px;
+      }
+
+      .dropdown {
+        left: 10px;
+        right: auto;
+        width: calc(100% - 20px);
+      }
+
+      header h1 {
+        font-size: 28px;
+      }
+      audio {
+  display: block;
+  margin: 15px auto;
+  width: 100%;
+  max-width: 600px;
+}
+.boton-ayuda {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background-color: #e63946;
+  color: white;
+  font-weight: bold;
+  padding: 12px 20px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-size: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  z-index: 9999;
+}
+.boton-ayuda:hover {
+  background-color: #c21e32;
+  transform: scale(1.1);
+}
+
+  </style>
+</head>
+<body>
+
+  <header onclick="changePage('welcome')">
+    <h1>VOCES FUERTES</h1>
+  </header>
+
+  <label for="menu" style="position:absolute; left:-9999px;">Selecciona una sección:</label>
+  <select class="dropdown" id="menu" onchange="changePage(this.value)">
+    <option value="welcome">Bienvenida</option>
+    <option value="report">Denuncia</option>
+    <option value="support">Apoyo</option>
+    <option value="stories">Experiencias</option>
+  </select>
+
+  <div id="welcome" class="page active">
+    <h2>Bienvenido/a a la Plataforma de Apoyo</h2>
+    <h2 id="typewriter"></h2>
+ <p>
+      Esta plataforma ha sido creada para brindar información, contención y orientación a todas las personas que han vivido o presenciado situaciones de violencia.
+    </p>
+    <p>
+      Aquí creemos en un entorno seguro donde cada voz sea escuchada, cada experiencia respetada y cada paso hacia la sanación acompañado.
+    </p>
+    <ul>
+      <li>Realizar denuncias de forma confidencial.</li>
+      <li>Acceder a información de instituciones que pueden ayudarte.</li>
+      <li>Compartir tu experiencia y leer otras que inspiran fuerza y empatía.</li>
+    </ul>
+    <p>
+      No estás solo/a. Estamos aquí para ayudarte. 💜
+    </p>
+  </div>
+
+  <div id="report" class="page">
+    <h2>Formulario de Denuncia</h2>
+    <form id="reportForm">
+      <label>Nombre de la víctima:</label>
+      <input type="text" name="nombre" required>
+
+      <label>Tipo de violencia:</label>
+      <input type="text" name="tipo_violencia" required>
+
+      <label>Narra lo sucedido:</label>
+      <textarea name="descripcion" required></textarea>
+
+      <button type="button" onclick="submitReport()">Enviar</button>
+      <button type="button" onclick="deleteReport()">Eliminar</button>
+    </form>
+    <div id="reportMessage"></div>
+
+    <h2>Buscar Denuncia</h2>
+    <input type="text" id="searchInput" placeholder="Ingrese datos de búsqueda">
+    <button type="button" onclick="searchReport()">Buscar</button>
+    <div id="searchResults"></div>
+  </div>
+
+  <div id="support" class="page">
+    <h2>Instituciones de Apoyo</h2>
+    <p>Si necesitas ayuda, puedes contactar a:</p>
+    <ul>
+      <li><b>Mujeres unidas contra el maltrato (MUM)</b> - Tel: 601223706</li>
+      <li><b>Línea de emergencia</b> - Tel: 911</li>
+      <li><b>Centro de Atención a Víctimas de Violencia</b> - correo electronico:conavim@segob.gob.mx
+      <li><b>Comisión Nacional para Prevenir y Erradicar la Violencia contra las Mujeres</b> - Tel: 5209 8902</li>
+      <li><b>Instituto Nacional de las Mujeres (Inmujeres)</b> - Tel: 55 5322 6030. </li>
+    </ul>
+    <p>
+  También puedes consultar los siguientes sitios oficiales:
+</p>
+<ul>
+  <li><a href="https://www.gob.mx/inmujeres" target="_blank">Instituto Nacional de las Mujeres (Inmujeres)</a></li>
+  <li><a href="https://www.gob.mx/conavim" target="_blank">Comisión Nacional para Prevenir y Erradicar la Violencia contra las Mujeres (CONAVIM)</a></li>
+  <li><a href="https://www.bing.com/ck/a?!&&p=95b5b9e47b97083cc3afd60857782c46fe18e2c5dc0169ecc7e262a6440a971aJmltdHM9MTc1MDIwNDgwMA&ptn=3&ver=2&hsh=4&fclid=1dd04630-dd91-61ec-225a-5035dc03607a&psq=MUM+institucion&u=a1aHR0cHM6Ly9hc29jaWFjaW9ubXVtLm9yZy8&ntb=1" target="_blank"> Mujeres unidas contra el maltrato (MUM)</a></li>
+</ul>
+    <h2>Video de apoyo</h2>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/gYgyoOvHpfA?si=L4FLCwqWUOz4jcTD" allowfullscreen></iframe>
+
+    <h2>Audio de Apoyo</h2>
+<p>Escucha este mensaje de aliento y acompañamiento.</p>
+<audio controls>
+  <source src="https://www.dropbox.com/scl/fi/m90f01sz41bq34v8w4g5z/audio-violencia.mp3?rlkey=1dpdcpmzhsm01m2gffrfal2xy&raw=1" type="audio/mpeg">
+  Tu navegador no soporta el elemento de audio.
+</audio>
+
+<h2>Imágenes sobre la Violencia de Género</h2>
+<div class="galeria-violencia">
+  <img src="https://th.bing.com/th/id/R.f0a4ca35a31401cd71d63f69557425f1?rik=qbLUQCJUv6OO3Q&pid=ImgRaw&r=0" alt="No más violencia" />
+  <img src="https://th.bing.com/th/id/R.9e34b1504a04db661991afa156ef4ec7?rik=xU7Tk9mgZ0Sd8Q&pid=ImgRaw&r=0" alt="Manos en alto por justicia" />
+  <img src="https://th.bing.com/th/id/OIP.MYDCPpuIOV3CpLrL43bbswHaE8?rs=1&pid=ImgDetMain&cb=idpwebpc2" alt="Detén la violencia" />
+</div>
+
+  </div>
+
+  <div id="stories" class="page">
+    <h2>Comparte tu Experiencia</h2>
+    <form onsubmit="saveExperience(event)">
+      <textarea name="experiencia" id="experienceText" required></textarea><br>
+      <button type="submit">Guardar</button>
+    </form>
+    <div id="experienceMessage"></div>
+
+    <h2>Experiencias Guardadas</h2>
+    <div id="savedExperiences"></div>
+  </div>
+
+  <script>
+    let texto = "Aquí tu voz será escuchada. ✊💜";
+let index = 0;
+function escribir() {
+  if (index < texto.length) {
+    document.getElementById("typewriter").innerHTML += texto.charAt(index);
+    index++;
+    setTimeout(escribir, 100);
+  }
+}
+window.onload = function() {
+  escribir();
+  changePage("welcome");
+};
+
+    function changePage(pageId) {
+      document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+      });
+
+      document.getElementById(pageId).classList.add('active');
+
+      const menu = document.getElementById("menu");
+      if (menu.value !== pageId) {
+        menu.value = pageId;
+      }
+    }
+
+    function submitReport() {
+      const nombre = document.querySelector('[name="nombre"]').value.trim();
+      const tipo = document.querySelector('[name="tipo_violencia"]').value.trim();
+      const descripcion = document.querySelector('[name="descripcion"]').value.trim();
+
+      if (!nombre || !tipo || !descripcion) {
+        showMessage("reportMessage", "Todos los campos son obligatorios.");
+        return;
+      }
+
+      const report = { nombre, tipo, descripcion };
+      const saved = JSON.parse(localStorage.getItem("reports") || "[]");
+      saved.push(report);
+      localStorage.setItem("reports", JSON.stringify(saved));
+
+      showMessage("reportMessage", "Denuncia enviada correctamente.");
+      document.getElementById("reportForm").reset();
+    }
+
+    function deleteReport() {
+      document.getElementById("reportForm").reset();
+      showMessage("reportMessage", "Formulario limpiado.");
+    }
+
+    function searchReport() {
+      const input = document.getElementById("searchInput").value.toLowerCase();
+      const saved = JSON.parse(localStorage.getItem("reports") || "[]");
+
+      const results = saved.filter(r =>
+        r.nombre.toLowerCase().includes(input) ||
+        r.tipo.toLowerCase().includes(input) ||
+        r.descripcion.toLowerCase().includes(input)
+      );
+
+      const container = document.getElementById("searchResults");
+      if (results.length === 0) {
+        container.innerHTML = "<p>No se encontraron coincidencias.</p>";
+      } else {
+        container.innerHTML = results.map(r =>
+          `<div>
+            <p><b>Nombre:</b> ${r.nombre}</p>
+            <p><b>Tipo:</b> ${r.tipo}</p>
+            <p><b>Descripción:</b> ${r.descripcion}</p>
+            <hr>
+          </div>`
+        ).join("");
+      }
+    }
+
+    function saveExperience(event) {
+      event.preventDefault();
+      const experience = document.getElementById("experienceText").value.trim();
+      if (experience === "") return;
+
+      const saved = JSON.parse(localStorage.getItem("experiences") || "[]");
+      saved.push(experience);
+      localStorage.setItem("experiences", JSON.stringify(saved));
+
+      showMessage("experienceMessage", "Experiencia guardada.");
+      document.getElementById("experienceText").value = "";
+      loadExperiences();
+    }
+
+    function loadExperiences() {
+      const saved = JSON.parse(localStorage.getItem("experiences") || "[]");
+      const container = document.getElementById("savedExperiences");
+      container.innerHTML = saved.map(exp => `<p>${exp}</p>`).join("");
+    }
+
+    function showMessage(id, message) {
+      const el = document.getElementById(id);
+      el.innerText = message;
+      setTimeout(() => el.innerText = "", 4000);
+    }
+
+    window.onload = function () {
+      loadExperiences();
+      document.getElementById("menu").value = "welcome";
+      changePage("welcome");
+    };
+setTimeout(() => {
+  alert("Recuerda que no estás sola/o. Estamos contigo.");
+}, 3000);
+
+  </script>
+</body>
+</html>
